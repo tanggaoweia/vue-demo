@@ -3,25 +3,51 @@ import App from './App.vue';
 import router from './router';
 import ElementUI from 'element-ui';
 import VueI18n from 'vue-i18n';
-import { messages } from './components/common/i18n';
+import {messages} from './components/common/i18n';
 import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 // import './assets/css/theme-green/index.css'; // 浅绿色主题
 import './assets/css/icon.css';
 import './components/common/directives';
 import 'babel-polyfill';
 import axios from 'axios';
+import echarts from 'echarts'
 
-// axios.interceptors.response.use((response) => {
-//     return response;
-// }, function (error) {
-//     console.log(11111)
-// });
+Vue.prototype.$echarts = echarts;
+
+// 请求拦截
+axios.interceptors.request.use(function (config) {
+    // 每次请求时会从localStorage中获取token
+    let token = localStorage.getItem("token");
+    if (token) {
+        config.headers.common['Authorization'] = token
+    }
+    return config
+}, function (error) {
+    return Promise.reject(error)
+});
+
+// 响应拦截
+axios.interceptors.response.use(function (response) {
+    // ①10010 token过期（30天） ②10011 token无效
+    if (response.data.code === 3) {
+        localStorage.removeItem("token");
+        localStorage.removeItem('ms_username');
+        this.$router.push('/login');
+    }
+    return response
+}, function (error) {
+    return Promise.reject(error)
+});
 
 
-axios.defaults.withCredentials = true;
+global.responseSuccessCode = 1;
+
+
+// axios.defaults.withCredentials = true;
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-axios.defaults.baseURL='http://10.1.1.43:8080';  //设置一个类似base_url的请求路径
-global.axios=axios;  //设置一个全局axios便于调用
+// axios.defaults.baseURL =  'http://10.1.1.77:2020';  //设置一个类似base_url的请求路径
+axios.defaults.baseURL =  'http://10.1.1.43:8080';  //设置一个类似base_url的请求路径
+global.axios = axios;  //设置一个全局axios便于调用
 Vue.config.productionTip = false;
 Vue.use(VueI18n);
 Vue.use(ElementUI, {
@@ -34,25 +60,25 @@ const i18n = new VueI18n({
 
 
 // 使用钩子函数对路由进行权限跳转
-// router.beforeEach((to, from, next) => {
-//     document.title = `${to.meta.title} | vue-manage-system`;
-//     const role = localStorage.getItem('ms_username');
-//     if (!role && to.path !== '/login') {
-//         next('/login');
-//     } else if (to.meta.permission) {
-//         // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
-//         role === 'admin' ? next() : next('/403');
-//     } else {
-//         // 简单的判断IE10及以下不进入富文本编辑器，该组件不兼容
-//         if (navigator.userAgent.indexOf('MSIE') > -1 && to.path === '/editor') {
-//             Vue.prototype.$alert('vue-quill-editor组件不兼容IE10及以下浏览器，请使用更高版本的浏览器查看', '浏览器不兼容通知', {
-//                 confirmButtonText: '确定'
-//             });
-//         } else {
-//             next();
-//         }
-//     }
-// });
+router.beforeEach((to, from, next) => {
+    document.title = `${to.meta.title} | vue-manage-system`;
+    const role = localStorage.getItem('ms_username');
+    if (!role && to.path !== '/login') {
+        next('/login');
+    } else if (to.meta.permission) {
+        // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
+        role === 'admin' ? next() : next('/403');
+    } else {
+        // 简单的判断IE10及以下不进入富文本编辑器，该组件不兼容
+        if (navigator.userAgent.indexOf('MSIE') > -1 && to.path === '/editor') {
+            Vue.prototype.$alert('vue-quill-editor组件不兼容IE10及以下浏览器，请使用更高版本的浏览器查看', '浏览器不兼容通知', {
+                confirmButtonText: '确定'
+            });
+        } else {
+            next();
+        }
+    }
+});
 
 new Vue({
     router,

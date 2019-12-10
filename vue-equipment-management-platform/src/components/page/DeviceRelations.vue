@@ -149,7 +149,7 @@
                 axios.post(api, param, config).then((val => {
                             let code = val.data.code;
                             let message = val.data.message;
-                            if (code === 1) {
+                            if (code === responseSuccessCode) {
                                 this.$message.success(message);
                             } else if (code === 200) {
                                 this.$message.warning(message);
@@ -192,7 +192,7 @@
                         axios.post(api, params).then((val => {
                             let code = val.data.code;
                             let message = val.data.message;
-                            if (code === 1) {
+                            if (code === responseSuccessCode) {
                                 this.$message.success(message);
                             } else if (code === 200) {
                                 this.$message.warning(message);

@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
+    "echarts": "^4.5.0",
     "element-ui": "^2.11.0",
     "mavon-editor": "^2.6.17",
     "vue": "^2.6.10",
@@ -23,6 +24,8 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.9.0",
     "@vue/cli-service": "^3.9.0",
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0",
     "vue-cookies": "^1.5.13",
     "vue-template-compiler": "^2.6.10"
   }

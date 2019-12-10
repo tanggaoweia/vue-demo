@@ -281,7 +281,7 @@
                 axios.post(api, params).then((val => {
                     let code = val.data.code;
                     let message = val.data.message;
-                    if (code === 1) {
+                    if (code === responseSuccessCode) {
                         this.$message.success(message);
                         this.getData();
                         this.currentPage = 1;
@@ -306,12 +306,11 @@
                 params.append('carcolor', this.editData.carColor);
                 params.append('place', this.editData.place);
                 params.append('memeberId', this.editData.nameId);
-                console.log(111, this.editData.carColor );
                 params.append('imei', this.editData.imei);
                 axios.post(api, params).then((val => {
                     let code = val.data.code;
                     let message = val.data.message;
-                    if (code === 1) {
+                    if (code === responseSuccessCode) {
                         this.$message.success(message);
                         this.getData();
                         this.currentPage = 1;
@@ -364,7 +363,7 @@
                 axios.post(api, {}).then(val => {
                     let code = val.data.code;
                     let message = val.data.message;
-                    if (code === 1) {
+                    if (code === responseSuccessCode) {
                         this.$message.success(message);
                         this.getData();
                     } else if (code === 200) {

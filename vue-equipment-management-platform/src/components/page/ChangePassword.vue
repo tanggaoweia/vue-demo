@@ -57,7 +57,7 @@
                     axios.post(api, params).then((val => {
                         let code = val.data.code;
                         let message = val.data.message;
-                        if (code === 1) {
+                        if (code === responseSuccessCode) {
                             this.$message.success(message);
                             localStorage.removeItem('ms_username');
                             setTimeout(() => {

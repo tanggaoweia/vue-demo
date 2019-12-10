@@ -2,11 +2,7 @@
     <div class="login-wrap">
         <div class="ms-login">
             <div class="ms-title">后台管理系统</div>
-            <form action="http://10.1.1.43:8080/memberManager/dologin" method="post">
-                <p>First name: <input type="text" name="name"/></p>
-                <p>Last name: <input type="password" name="pwd"/></p>
-                <input type="submit" value="Submit"/>
-            </form>
+
                        <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
                             <el-form-item prop="username">
                                 <el-input v-model="param.username" placeholder="username">
@@ -25,7 +21,6 @@
                             <div class="login-btn">
                                 <el-button type="primary" @click="submitForm()">登录</el-button>
                             </div>
-                            <p class="login-tips">Tips : 用户名和密码随便填。</p>
                         </el-form>
         </div>
     </div>
@@ -55,12 +50,15 @@
                 params.append('pwd', this.param.password);
                 axios.post(api, params).then((val => {
                     let code = val.data.code;
-                    if (code === 1) {
-                        this.$message.success('登录成功');
+                    let message = val.data.message;
+                    if (code === responseSuccessCode) {
+                        this.$message.success(message);
+                        console.log(val);
                         localStorage.setItem('ms_username', this.param.username);
+                        localStorage.setItem('token', val.headers['token']);
                         this.$router.push('/');
                     } else {
-                        this.$message.err('出错了');
+                        this.$message.warning(message);
                     }
                 })).catch(error => {
                     console.log('Error', error.message)

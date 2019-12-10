@@ -167,7 +167,6 @@
                     <el-button @click="deleteVisible = false">取 消</el-button>
                     <el-button @click="deleteRow" type="primary">确 定</el-button>
                 </span>
-
             </el-dialog>
 
             <!--            分页-->
@@ -251,7 +250,7 @@
                 let imei = row.imei;
                 let api = 'deviceManager/getCarInfo/' + imei;
                 axios.get(api, {}).then(res => {
-                    if (res.data.code === 1) {
+                    if (res.data.code === responseSuccessCode) {
                         this.carDetailData.carBrand = res.data.brand;
                         this.carDetailData.carType = res.data.carmodel;
                         this.carDetailData.address = res.data.place;
@@ -300,7 +299,7 @@
                 axios.post(api, params).then((val => {
                     let code = val.data.code;
                     let message = val.data.message;
-                    if (code === 1) {
+                    if (code === responseSuccessCode) {
                         this.$message.success(message);
                         this.getData();
                         this.currentPage = 1;
@@ -326,7 +325,7 @@
                 axios.post(api, params).then((val => {
                     let code = val.data.code;
                     let message = val.data.message;
-                    if (code === 1) {
+                    if (code === responseSuccessCode) {
                         this.$message.success(message);
                         this.getData();
                         this.currentPage = 1;
@@ -374,7 +373,7 @@
                 axios.post(api, {}).then(val => {
                     let code = val.data.code;
                     let message = val.data.message;
-                    if (code === 1) {
+                    if (code === responseSuccessCode) {
                         this.$message.success(message);
                         this.getData();
                     } else if (code === 200) {

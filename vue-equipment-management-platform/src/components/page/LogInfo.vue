@@ -168,7 +168,7 @@
                 axios.post(api, params).then((val => {
                     let code = val.data.code;
                     let message = val.data.message;
-                    if (code === 1) {
+                    if (code === responseSuccessCode) {
                         this.$message.success(message);
                         this.currentPage -= 1;
                         if (this.currentPage === 0) {
@@ -240,7 +240,7 @@
                 axios.post(api, {}).then(val => {
                     let code = val.data.code;
                     let message = val.data.message;
-                    if (code === 1) {
+                    if (code === responseSuccessCode) {
                         this.$message.success(message);
                         api = "/logManager/listlog/" + this.currentPage + "/10/1/1/1/1";
                         axios.get(api, {}).then(res => {
