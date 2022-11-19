@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.9.0",
-    "@vue/cli-service": "^3.9.0",
+    "@vue/cli-service": "^5.0.8",
     "node-sass": "^4.13.0",
     "sass-loader": "^8.0.0",
     "vue-cookies": "^1.5.13",
